@@ -1,3 +1,3 @@
 # Cuperhacks
 
-CuperHacks is a global hackathon striving to enrich the development of teens around the world to build a better futrue in the STEM field.
+Welcome to CuperHacks! We are the largest virtual hackathon of the Bay Area with the goal of enriching teen development and building a better future in the STEM field. We are an event run by The Human Tech Project accessible at thehumantechproject.org.
