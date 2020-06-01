@@ -1,0 +1,996 @@
+<!DOCTYPE html> <html lang='en'> <head> 
+<script src="vanta/vendor/three.r95.min.js"></script>
+<script src="vanta/dist/vanta.waves.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+<style>
+.faq-container {
+  margin: 0 auto;
+  padding: 4rem;
+  width: 48rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+  color: #373d51;
+  padding: 1.3rem;
+  margin: 0;
+}
+
+.accordion a {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  color: #7288a2;
+  font-size: 1.15rem;
+  font-weight: 400;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.accordion a:hover,
+.accordion a:hover::after {
+  cursor: pointer;
+  color: #03b5d2;
+}
+
+.accordion a:hover::after {
+  border: 1px solid #03b5d2;
+}
+
+.accordion a.active {
+  color: #03b5d2;
+  border-bottom: 1px solid #03b5d2;
+}
+
+.accordion a::after {
+  font-family: 'Ionicons';
+  content: '\f218';
+  position: absolute;
+  float: right;
+  right: 1rem;
+  font-size: 1rem;
+  color: #7288a2;
+  padding: 5px;
+  width: 30px;
+  height: 30px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  border: 1px solid #7288a2;
+  text-align: center;
+}
+
+.accordion a.active::after {
+  font-family: 'Ionicons';
+  content: '\f209';
+  color: #03b5d2;
+  border: 1px solid #03b5d2;
+}
+
+.accordion .content {
+  opacity: 0;
+  padding: 0 1rem;
+  max-height: 0;
+  border-bottom: 1px solid #e5e5e5;
+  overflow: hidden;
+  clear: both;
+  -webkit-transition: all 0.2s ease 0.15s;
+  -o-transition: all 0.2s ease 0.15s;
+  transition: all 0.2s ease 0.15s;
+}
+
+.accordion .content p {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.accordion .content.active {
+  opacity: 1;
+  padding: 1rem;
+  max-height: 100%;
+  -webkit-transition: all 0.35s ease 0.15s;
+  -o-transition: all 0.35s ease 0.15s;
+  transition: all 0.35s ease 0.15s;
+}
+.acc {
+  margin: 90px 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.acc li {
+  list-style-type: none;
+  padding: 0;
+}
+
+.acc_ctrl {
+  background: #FFFFFF;
+  border: none;
+  border-bottom: solid 1px #F2F2F2;
+  cursor: pointer;
+  display: block;
+  outline: none;
+  padding: 2em;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.acc_ctrl:before {
+  background: #44596B;
+  content: '';
+  height: 2px;
+  margin-right: 37px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  width: 14px;
+}
+
+.acc_ctrl:after {
+  background: #44596B;
+  content: '';
+  height: 2px;
+  margin-right: 37px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 14px;
+}
+
+.acc_ctrl.active:before {
+  -webkit-transform: rotate(0deg);
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.acc_ctrl.active h2, .acc_ctrl:focus h2 {
+  position: relative;
+}
+
+.acc_panel {
+  background: #F2F2F2;
+  display: none;
+  overflow: hidden;
+}
+.hexa{
+  border: 0px;
+  float: left;
+  text-align: center;
+  height: 35px;
+  width: 60px;
+  font-size: 22px;
+  background: #f0f0f0;
+  color: #3c3c3c;
+  position: relative;
+  margin-top: 15px;
+}
+
+.hexa:before{
+  content: ""; 
+  position: absolute; 
+  left: 0; 
+  width: 0; 
+  height: 0;
+  border-bottom: 15px solid #f0f0f0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  top: -15px;
+}
+
+.hexa:after{
+  content: ""; 
+  position: absolute; 
+  left: 0; 
+  width: 0; 
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  border-top: 15px solid #f0f0f0;
+  bottom: -15px;
+}
+
+.timeline {
+  position: relative;
+  padding: 0;
+  width: 100%;
+  margin-top: 20px;
+  list-style-type: none;
+}
+
+.timeline:before {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  content: ' ';
+  display: block;
+  width: 2px;
+  height: 100%;
+  margin-left: -1px;
+  background: rgb(213,213,213);
+  background: -moz-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(100%,rgba(125,185,232,1)));
+  background: -webkit-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
+  background: -o-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
+  background: -ms-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
+  background: linear-gradient(to bottom, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
+  z-index: 5;
+}
+
+.timeline li {
+  padding: 2em 0;
+}
+
+.timeline .hexa{
+  width: 16px;
+  height: 10px;
+  position: absolute;
+  background: #00c4f3;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  margin-left:auto;
+  margin-right:auto;
+  top: -30px;
+  margin-top: 0;
+}
+
+.timeline .hexa:before {
+  border-bottom: 4px solid #00c4f3;
+  border-left-width: 8px;
+  border-right-width: 8px;
+  top: -4px;
+}
+
+.timeline .hexa:after {
+  border-left-width: 8px;
+  border-right-width: 8px;
+  border-top: 4px solid #00c4f3;
+  bottom: -4px;
+}
+
+.direction-l,
+.direction-r {
+  float: none;
+  width: 100%;
+  text-align: center;
+}
+
+.flag-wrapper {
+  text-align: center;
+  position: relative;
+}
+
+.flag {
+  position: relative;
+  display: inline;
+  background: rgb(255,255,255);
+  font-weight: 600;
+  z-index: 15;
+  padding: 6px 10px;
+  text-align: left;
+  border-radius: 5px;
+}
+
+.direction-l .flag:after,
+.direction-r .flag:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -15px;
+  height: 0;
+  width: 0;
+  margin-left: -8px;
+  border: solid transparent;
+  border-bottom-color: rgb(255,255,255);
+  border-width: 8px;
+  pointer-events: none;
+}
+
+.direction-l .flag {
+  -webkit-box-shadow: -1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: -1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
+  box-shadow: -1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
+}
+
+.direction-r .flag {
+  -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
+  -moz-box-shadow: 1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
+}
+
+.time-wrapper {
+  display: block;
+  position: relative;
+  margin: 4px 0 0 0;
+  z-index: 14;
+  line-height: 1em;
+  vertical-align: middle;
+  color: #fff;
+}
+
+.direction-l .time-wrapper {
+  float: none;
+}
+
+.direction-r .time-wrapper {
+  float: none;
+}
+
+.time {
+  background: #00c4f3;
+  display: inline-block;
+  padding: 8px;
+}
+
+.desc {
+  position: relative;
+  margin: 1em 0 0 0;
+  padding: 1em;
+  background: rgb(254,254,254);
+  -webkit-box-shadow: 0 0 1px rgba(0,0,0,0.20);
+  -moz-box-shadow: 0 0 1px rgba(0,0,0,0.20);
+  box-shadow: 0 0 1px rgba(0,0,0,0.20);
+  z-index: 15;
+}
+
+.direction-l .desc,
+.direction-r .desc {
+  position: relative;
+  margin: 1em 1em 0 1em;
+  padding: 1em;
+  z-index: 15;
+}
+
+@media(min-width: 768px){
+  .timeline {
+    width: 660px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+
+  .timeline li:after {
+    content: "";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+  
+  .timeline .hexa {
+    left: -28px;
+    right: auto;
+    top: 8px;
+  }
+
+  .timeline .direction-l .hexa {
+    left: auto;
+    right: -28px;
+  }
+
+  .direction-l {
+    position: relative;
+    width: 310px;
+    float: left;
+    text-align: right;
+  }
+
+  .direction-r {
+    position: relative;
+    width: 310px;
+    float: right;
+    text-align: left;
+  }
+
+  .flag-wrapper {
+    display: inline-block;
+  }
+  
+  .flag {
+    font-size: 18px;
+  }
+
+  .direction-l .flag:after {
+    left: auto;
+    right: -16px;
+    top: 50%;
+    margin-top: -8px;
+    border: solid transparent;
+    border-left-color: rgb(254,254,254);
+    border-width: 8px;
+  }
+
+  .direction-r .flag:after {
+    top: 50%;
+    margin-top: -8px;
+    border: solid transparent;
+    border-right-color: rgb(254,254,254);
+    border-width: 8px;
+    left: -8px;
+  }
+
+  .time-wrapper {
+    display: inline;
+    vertical-align: middle;
+    margin: 0;
+  }
+
+  .direction-l .time-wrapper {
+    float: left;
+  }
+
+  .direction-r .time-wrapper {
+    float: right;
+  }
+
+  .time {
+    padding: 5px 10px;
+  }
+
+  .direction-r .desc {
+    margin: 1em 0 0 0.75em;
+  }
+}
+
+@media(min-width: 992px){
+  .timeline {
+    width: 800px;
+    margin: 0 auto;
+    margin-top: 20px;
+  }
+
+  .direction-l {
+    position: relative;
+    width: 380px;
+    float: left;
+    text-align: right;
+  }
+
+  .direction-r {
+    position: relative;
+    width: 380px;
+    float: right;
+    text-align: left;
+  }
+}
+.fullscreen-bg__video {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    object-fit: cover;
+    overflow: hidden !important;
+    background-size: cover;
+    background-position: center center;
+
+
+}
+</style>
+	<meta class="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>CuperHacks - a student-led global online hackathon</title>
+	<!-- Don't forget to add your metadata here -->
+	<link rel='stylesheet' href='css/style.min.css' />
+</head>
+<body>
+	<!-- Hero(extended) navbar -->
+	<div class="navbar navbar--extended">
+		<nav class="nav__mobile"></nav>
+		<div class="container">
+			<div class="navbar__inner">
+				<a href="index.html" class="navbar__logo"><img src="https://i.ibb.co/xHYpY2c/Untitled-drawing-2020-03-07-T193844-828.png" width=250px;></img></a>
+				<nav class="navbar__menu">
+					<ul>
+						<li><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#venue">Venue</a></li>
+            <li><a href="#submit">Submissions</a></li>
+						<li><a href="#prizes">Prizes</a></li>
+						<li><a href="#faq">FAQ</a></li>
+						<li><a href="#sponsors">Sponsors</a></li>
+					
+						<li><a href="#schedule">Schedule</a></li>
+						<li><a href="#team">Team</a></li>
+					</ul>
+				</nav>
+				<div class="navbar__menu-mob"><a href="" id='toggle'><svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" class=""></path></svg></a></div>
+			</div>
+		</div>
+	</div>
+	<!-- Hero unit -->
+<div class="hero" id="hero" style="width:100%; background-color: white !important;">
+		<video autoplay muted loop id="myVideo" class="fullscreen-bg__video" style="color: white;">	
+			  <source src="bjvideo.mp4" type="video/mp4">
+		</video>
+
+
+		<div class="hero__inner" id="hero__inner">
+			<div class="container">
+				<div class="hero__content">
+					<div class="hero__content__inner" id='navConverter'>
+						<img width=25% src="https://i.ibb.co/JrFyZqd/Untitled-drawing-2020-03-07-T193110-143.png"></img>
+						<h2 style="color: white; font-size: 75px; font-family: Raleway, sans-serif;"><b>Cuper</b>Hacks</h2>
+						<h2 style="color: white; font-family: Raleway, sans-serif">Online Hackathon on June 6</h2>
+						<h2> <Br> </h2>
+						<a href="https://tinyurl.com/CUPERHAKCS2020" target=”_blank” class="button button__accent">Sign up</a>
+						<a href="#" class="button hero__button">Code of Conduct</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+	<div class="hero__sub">
+		<span id="scrollToNext" class="scroll">
+			<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" class='hero__sub__down' fill="currentColor" width="512px" height="512px" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"><path d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3z"/></svg>
+		</span>
+	</div>
+	<!-- Steps -->
+	<div class="steps landing__section" id="about">
+		<div class="container">
+			<h2>About CuperHacks</h2>
+			<h2>CuperHacks is a global hackathon striving to enrich the development of teens around the world to build a better futrue in the STEM field.</h2>
+			<h2>We welcome:</h2>
+		</div>
+		<div class="container">
+			<div class="steps__inner">
+				<div class="step">
+					<div class="step__media">
+						<img src="./images/undraw_designer.svg" class="step__image">
+					</div>
+					<h4>Programmers</h4>
+				</div>
+				<div class="step">
+					<div class="step__media">
+						<img src="./images/undraw_responsive.svg" class="step__image">
+					</div>
+					<h4>Designers</h4>
+				</div>
+				<div class="step">
+					<div class="step__media">
+						<img src="./images/undraw_creation.svg" class="step__image">
+					</div>
+					<h4>Makers</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+<!--
+	<!-- Expanded sections -->
+	<div class="expanded landing__section" id="schedule">
+		<div class="container">
+			<div class="expanded__inner">
+				<h2 style="text-align:center">Schedule</h2><ul class="timeline">
+  <!-- Item 1 -->
+
+  <!-- Item 2 -->
+  <li>
+    <div class="direction-l">
+      <div class="flag-wrapper">
+        <span class="hexa"></span>
+        <span class="flag">Opening Ceremony</span>
+        <span class="time-wrapper"><span class="time">9:00 AM</span></span>
+      </div>
+    </div>
+  </li>
+
+  <!-- Item 3 -->
+  <li>
+    <div class="direction-r">
+      <div class="flag-wrapper">
+        <span class="hexa"></span>
+        <span class="flag">Group Mixer & Beginners Workshop</span>
+        <span class="time-wrapper"><span class="time">9:30 AM</span></span>
+      </div>
+    </div>
+  </li> 
+ <li>
+    <div class="direction-l">
+      <div class="flag-wrapper">
+        <span class="hexa"></span>
+        <span class="flag">Workshop #2</span>
+        <span class="time-wrapper"><span class="time">2:30 PM</span></span>
+      </div>
+    </div>
+  </li>
+<li>
+    <div class="direction-r">
+      <div class="flag-wrapper">
+        <span class="hexa"></span>
+        <span class="flag">Judging and Submission</span>
+        <span class="time-wrapper"><span class="time">8:00 PM</span></span>
+      </div>
+    </div>
+  </li>
+<li>
+    <div class="direction-l">
+      <div class="flag-wrapper">
+        <span class="hexa"></span>
+        <span class="flag">Raffle & Brawl Stars & Tournament</span>
+        <span class="time-wrapper"><span class="time">8:00-8:30 PM</span></span>
+      </div>
+    </div>
+  </li>
+    <div class="direction-r">
+      <div class="flag-wrapper">
+        <span class="hexa"></span>
+        <span class="flag">Awards and Closing Ceremony</span>
+        <span class="time-wrapper"><span class="time">8:30 PM</span></span>
+      </div>
+    </div>
+  </li>
+</ul></h2>
+			</div>
+		</div>
+  </div>
+  <div class="expanded landing__section" id="venue">
+    <div class="container">
+           
+              <h1 style="text-align: center;">Venue</h1>
+              <div class="row">
+                <div class="col-md-6">
+                  <img style="width: 100%;" src="https://d33wubrfki0l68.cloudfront.net/cb47bab154b58a0c606b0823dd26e970014a5c64/0f37d/assets/img/brands/logotype/zoom.png"></img>
+                </div>
+                <div class="col-md-6" style="text-align: center;">
+                  <h2 style="text-align: center;">Sign in at <b>8:50 AM</b></h2>
+                  <a style="text-align: center; margin-left: auto; margin-right: auto;" href="#" class="button button__accent">Link will be available here</a>
+                </div>
+              </div>
+          
+
+    </div>
+</div><div class="expanded landing__section" id="submit">
+  <div class="container"  style="text-align: center;">
+         
+            <h1 style="text-align: center;">Submissions</h1>
+            <p><b>Submission Requirements / Guidelines:</b> <br> A two minute video demoing and explaining your team's product and how it was created. </p>
+            <a href="https://forms.gle/CEnocie1AnLUrEXa9" class="button button__accent">Link to form</a>
+        
+
+  </div>
+</div>
+<div class="expanded landing__section" id="prizes">
+  <div class="container">
+         
+            <h1 style="text-align: center;">Prizes</h1>
+            <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+              <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+                <h2><b>3rd Place</b> Prize</h2>
+                <img style="width: 100%;" src="https://i.ibb.co/q97WVR8/trophy.png"></img>
+                <h1>$150</h1>
+              </div>
+              <div class="col-md-4" style="text-align: center; margin-top: auto;">
+                <h2><b>1st Place</b> Prize</h2>
+                <img style="width: 100%;" src="https://i.ibb.co/q97WVR8/trophy.png"></img>
+                <h1>$300</h1>
+              </div>
+              <div class="col-md-4" style="text-align: center; margin-top: auto;">
+                <h2><b>2nd Place</b> Prize</h2>
+                <img style="width: 100%;" src="https://i.ibb.co/q97WVR8/trophy.png"></img>
+                <h1>$200</h1>
+              </div>
+            </div>
+            <div style="text-align: center;">
+              <h2><b>Best UI: $25 <br>Best Corona Related Application: $25 <br>  Best Beginner: Wolfram<br>Runner up #1: Wolfram <br>Runner up #2: Wolfram<br> Runner up #3: Wolfram </h2>
+            </div>
+  </div>
+</div>
+	 <div class="expanded landing__section" id="faq">
+                <div class="container">
+                        <div class="expanded__inner">
+				<div class="faq-container">
+
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="accordion">
+    <div class="accordion-item">
+      <a>What do I need for the hackathon?</a>
+      <div class="content">
+      	<p>A laptop, a charger, and a valid student ID will be important during the hackathon. You will have to access our ceremonies with Zoom, so please download the Zoom app if you haven't already.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <a>What if I don't know how to code?</a>
+      <div class="content">
+	<p>No prior coding experience is necessary. Online resources are provided as well as mentors during the hackathon. We will have a special zoom room for those with questions or needing coding help.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <a>What if I don't have a team?</a>
+      <div class="content">
+	<p>Don't worry! A team mixer will be conducted at the beginning of the hackathon.</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <a>How much does it cost?</a>
+      <div class="content">
+	<p>The hackathon is completely free!</p>
+      </div>
+    </div>
+    <div class="accordion-item">
+      <a>What forms do I need to fill out to attend the hackathon?</a>
+      <div class="content">
+	<p>No forms are required to attend this hackathon.</p>
+	
+      </div>
+    </div>
+  </div>
+  
+</div>
+                        </div>
+                </div>
+        </div>
+
+	
+
+	<div class="expanded landing__section" id="sponsors">
+		<div class="container">
+				<h2 style="text-align:center;">Huge thanks to our sponsors!</h2>
+				<h2> <br> </h2>
+				<div class="sponsor-container" style="padding: 20px; padding-top: 30px; text-align: center; box-radius: 20px;">
+				<div class="row">
+					<div class="col-md-4">
+						<a href="https://www.bugsee.com/">
+							<img style="width:50%" src="https://i.ibb.co/V0G0n8D/bugsee.png"></img>
+						</a>
+					</div>
+					 <div class="col-md-4">
+                                                <a href="https://artofproblemsolving.com/">
+                                                        <img style="width:50%" src="https://i.ibb.co/dLydC2V/aops-1.png"></img>
+                                                </a>
+                                        </div>
+					<div class="col-md-4">
+                                                <a href="https://magoosh.com/">
+                                                        <img style="width:50%" src="https://i.ibb.co/M9KyvJp/magoosh.png"></img>
+                                                </a>
+                                        </div>
+				</div>
+				<h2><br></h2>
+				<div class="row">
+					<div class="col-md-4">
+                                                <a href="https://www.wolframalpha.com/">
+                                                        <img style="width:50%" src="https://i.ibb.co/kyZcy7t/wolfram.png"></img>
+                                                </a>
+                                        </div>
+					<div class="col-md-4">
+                                                <a href="https://cloudsploit.com/">
+                                                        <img style="width:50%" src="https://i.ibb.co/TW85MmL/cloudsploit.png"></img>
+                                                </a>
+                                        </div>
+					<div class="col-md-4">
+                                                <a href="https://balsamiq.com/">
+                                                        <img style="width:50%" src="https://i.ibb.co/tmXqps1/balsamiq.png"></img>
+                                                </a>
+                                        </div>
+			         </div>
+				<h2><br></h2>
+                                <div class="row">
+					<div class="col-md-4">
+                                                <a href="https://www.linode.com/">
+                                                        <img style="width:50%" src="https://i.ibb.co/BnDf9dV/linode-png-eps-download-2049.png"></img>
+                                                </a>
+                                        </div>
+					<div class="col-md-4">
+                                                <a href="https://www.sashido.io/">
+                                                        <img style="width:50%" src="https://i.ibb.co/DK9D0hj/sashido.png"></img>
+                                                </a>
+                                        </div>
+					<div class="col-md-4">
+                                                <a href="">
+                                                        <img style="width:50%" src=""></img>
+                                                </a>
+                                        </div>			
+				</div>
+				<h2 style="text-align:center;">Looking to sponsor us?</h2>
+				<a href="#" class="button button__accent">Sponsorship Prospectus</a>
+				</div>
+		</div>
+	</div>
+	<div class="expanded landing__section" id="team">
+                <div class="container">
+                                <h1 style="text-align:center;">Our Team</h1>
+                                <h2> <br> </h2>
+                                	<div class="row" style="text-align: center">
+						<div class="col-md-6">
+                                                        <div style="margin-left: auto; margin-right: auto; background-color: white; border-radius: 25px;  text-align: center; -webkit-box-shadow: 0px 0px 4px -4px #000000; padding : 20px; width:90%">
+							<img src="https://i.ibb.co/Xbc3xK9/Soma-Tummala.png" width=70%/>
+							<h2>Soma Tummala</h2>
+							<p>Cofounder & President | Grade 11</p>
+                                                        </div>
+                                        	</div>
+						<div class="col-md-6">
+							<div style="margin-left: auto; margin-right: auto; background-color: white; border-radius: 25px; text-align: center; -webkit-box-shadow: 0px 0px 4px -4px #000000; padding : 20px; width:90%">
+							<img src="https://i.ibb.co/nCcny0s/Arnva-Garg.png" width=70%/>
+							<h2>Arnav Garg</h2>
+							<p>Cofounder & President | Grade 11</p>
+							</div>
+            </div>
+          </div>
+          <h2> <Br> </h2>
+          <div class="row">
+						 
+						 <div class="col-md-4">
+                                                  <div style="margin-left: auto; margin-right: auto; background-color: white; border-radius: 25px;  text-align: center; -webkit-box-shadow: 0px 0px 4px -4px #000000; padding : 20px; width:90%">
+							<img src="https://i.ibb.co/TWK7WKz/Rahul-Kaura.png" width=70%/>
+                                                        <h2>Rahul Kaura</h2>
+                                                        <p>Vice President | Grade 10</p>
+							</div>
+
+                                                </div> 
+					
+					<div class="col-md-4">
+                                                  <div style="margin-left: auto; margin-right: auto; background-color: white; border-radius: 25px; text-align: center; -webkit-box-shadow: 0px 0px 4px -4px #000000; padding : 20px; width:90%">
+                                                        <img src="https://i.ibb.co/1Jnf3Q3/Anthony-Mitine.png" width=70%/>
+                                                        <h2>Anthony Mitine</h2>
+                                                        <p>Director of Outreach | Grade 10</p>
+                                                        </div>
+
+                                                </div>
+                                             
+					<div class="col-md-4">
+						<div style="margin-left: auto; margin-right: auto;background-color: white; text-align: center; border-radius: 25px; -webkit-box-shadow: 0px 0px 4px -4px #000000; padding : 20px; width:90%">
+							<img src="https://i.ibb.co/Kwc926W/Tevin-Wang.png" width=70%/>
+                                                        <h2>Tevin Wang</h2>
+                                                        <p>Director of Technology | Grade 10</p>
+                                                       
+            </div>
+          
+          </div>
+        </div>
+        <h2><br></h2>
+        <div class="row">
+					<div class="col-md-4">
+                                                        <div style="margin-left: auto; margin-right: auto; background-color: white; text-align: center;  border-radius: 25px;  -webkit-box-shadow: 0px 0px 4px -4px #000000; padding : 20px; width:90%">
+                                          		<img src="https://i.ibb.co/XS41p9f/Rushil-Chandrupatla.png" width=70% />
+							<h2>Rushil Chandrupatla</h2>
+							<p>Head of Operations | Grade 10 </p>
+						
+					</div>
+					</div>
+				
+					<div class="col-md-4">
+                                                <div style="margin-left: auto; margin-right: auto; background-color: white; text-align: center; border-radius: 25px;   -webkit-box-shadow: 0px 0px 4px -4px #000000; padding : 20px; width:90%">
+                                                        <img src="https://i.ibb.co/xHS9yPs/gavinwong.png" width=70%/>
+                                                        <h2>Gavin Wong</h2>
+                                                        <p>Director of Sponsorships | Grade 11</p>
+
+                                                </div>
+                                        </div>
+
+					
+                </div>
+		<h2> <Br> </h2>
+        </div>
+	<!-- Call To Action -->
+	<div class="cta cta--reverse" id="register">
+		<div class="container">
+			<div class="cta__inner">
+				<h2 class="cta__title">Register now</h2>
+				<p class="cta__sub cta__sub--center">Limited spots available. Sign-up today!</p>
+				<a href="#" class="button button__accent">Signup</a>
+			</div>
+		</div>
+	</div>
+	<!-- Footer -->
+	<div class="footer footer--dark">
+		<div class="container">
+			<div class="footer__inner">
+				<a href="index.html" class="footer__textLogo">CuperHacks</a>
+				<div class="footer__data">
+					<div class="footer__data__item">
+						<div class="footer__row">
+							Template made by <a href="https://twitter.com/ninalimpi" target="_blank" class="footer__link">Katerina Limpitsouni</a>
+						</div>
+						<div class="footer__row">
+						Template Code/design by <a href="https://twitter.com/anges244" target="_blank" class="footer__link">Aggelos Gesoulis</a>
+						</div>
+					</div>
+					<div class="footer__data__item">
+						<div class="footer__row">Contact us at cuperhacks@gmail.com
+						</div>
+					</div>
+					<div class="footer__data__item">Website created by Tevin Wang
+					<!--
+					<div class="footer__row">
+						<a href="https://github.com/anges244/evie" target="_blank" class="footer__link">GitHub</a>
+					</div>
+					<div class="footer__row">
+						<a href="https://twitter.com/undraw_co" target="_blank" class="footer__link">Twitter</a>
+					</div>
+					<div class="footer__row">
+						<a href="https://www.facebook.com/undraw.co/" target="_blank" class="footer__link">Facebook</a>
+					</div>
+					<div class="footer__row">
+						<a href="./additional.html" class="footer__link">MIT license</a>
+					</div>
+					-->
+				</div>
+			</div>
+		</div>
+	</div>
+<script src='js/app.min.js'></script>
+<script>
+VANTA.WAVES({
+  el: "#waves",
+  mouseControls: true,
+  touchControls: true,
+  minHeight: 200.00,
+  minWidth: 200.00,
+  scale: 1.00,
+  scaleMobile: 1.00,
+  color: 0x1888,
+  waveSpeed: 0.30,
+  zoom: 1.13
+})
+const items = document.querySelectorAll(".accordion a");
+
+function toggleAccordion(){
+  this.classList.toggle('active');
+  this.nextElementSibling.classList.toggle('active');
+}
+
+items.forEach(item => item.addEventListener('click', toggleAccordion));
+function onYouTubeIframeAPIReady() {
+  var player;
+  player = new YT.Player('YouTubeBackgroundVideoPlayer', {
+      videoId: '{$loadYouTubeVideoID}', // YouTube Video ID
+      width: 1280,               // Player width (in px)
+      height: 720,              // Player height (in px)
+      playerVars: {
+        playlist: '{$loadYouTubeVideoID}',
+          autoplay: 1,        // Auto-play the video on load
+          autohide: 1,
+          disablekb: 1, 
+          controls: 0,        // Hide pause/play buttons in player
+          showinfo: 0,        // Hide the video title
+          modestbranding: 1,  // Hide the Youtube Logo
+          loop: 1,            // Run the video in a loop
+          fs: 0,              // Hide the full screen button
+          autohide: 0,         // Hide video controls when playing
+          rel: 0,
+          enablejsapi: 1
+      },
+      events: {
+        onReady: function(e) {
+            e.target.mute();
+            e.target.setPlaybackQuality('hd1080');
+        },
+        onStateChange: function(e) {
+          if(e && e.data === 1){
+              var videoHolder = document.getElementById('home-banner-box');
+              if(videoHolder && videoHolder.id){
+                videoHolder.classList.remove('loading');
+              }
+          }else if(e && e.data === 0){
+            e.target.playVideo()
+          }
+        }
+      }
+  });
+}
+</script>
+<script async src="https://www.youtube.com/iframe_api"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</body>
+</html>
