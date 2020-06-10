@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <script src="vanta/vendor/three.r95.min.js"></script>
+  <script src="vanta/dist/vanta.waves.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+  <style>
+    .faq-container {
+      margin: 0 auto;
+      padding: 4rem;
+      width: 48rem;
+    }
+
+    h3 {
+      font-size: 1.75rem;
+      color: #373d51;
+      padding: 1.3rem;
+      margin: 0;
+    }
+
+    .accordion a {
+      position: relative;
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-orient: vertical;
+      -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+      flex-direction: column;
+      width: 100%;
+      padding: 1rem 3rem 1rem 1rem;
+      color: #7288a2;
+      font-size: 1.15rem;
+      font-weight: 400;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .accordion a:hover,
+    .accordion a:hover::after {
+      cursor: pointer;
+      color: #03b5d2;
+    }
+
+    .accordion a:hover::after {
+      border: 1px solid #03b5d2;
+    }
+
+    .accordion a.active {
+      color: #03b5d2;
+      border-bottom: 1px solid #03b5d2;
+    }
+
+    .accordion a::after {
+      font-family: 'Ionicons';
+      content: '\f218';
+      position: absolute;
+      float: right;
+      right: 1rem;
+      font-size: 1rem;
+      color: #7288a2;
+      padding: 5px;
+      width: 30px;
+      height: 30px;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      border: 1px solid #7288a2;
+      text-align: center;
+    }
+
+    .accordion a.active::after {
+      font-family: 'Ionicons';
+      content: '\f209';
+      color: #03b5d2;
+      border: 1px solid #03b5d2;
+    }
+
+    .accordion .content {
+      opacity: 0;
+      padding: 0 1rem;
+      max-height: 0;
+      border-bottom: 1px solid #e5e5e5;
+      overflow: hidden;
+      clear: both;
+      -webkit-transition: all 0.2s ease 0.15s;
+      -o-transition: all 0.2s ease 0.15s;
+      transition: all 0.2s ease 0.15s;
+    }
+
+    .accordion .content p {
+      font-size: 1rem;
+      font-weight: 300;
+    }
+
+    .accordion .content.active {
+      opacity: 1;
+      padding: 1rem;
+      max-height: 100%;
+      -webkit-transition: all 0.35s ease 0.15s;
+      -o-transition: all 0.35s ease 0.15s;
+      transition: all 0.35s ease 0.15s;
+    }
+
+    .acc {
+      margin: 90px 0;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .acc li {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .acc_ctrl {
+      background: #FFFFFF;
+      border: none;
+      border-bottom: solid 1px #F2F2F2;
+      cursor: pointer;
+      display: block;
+      outline: none;
+      padding: 2em;
+      position: relative;
+      text-align: center;
+      width: 100%;
+    }
+
+    .acc_ctrl:before {
+      background: #44596B;
+      content: '';
+      height: 2px;
+      margin-right: 37px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      -webkit-transform: rotate(90deg);
+      -moz-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+      -o-transform: rotate(90deg);
+      transform: rotate(90deg);
+      -webkit-transition: all 0.2s ease-in-out;
+      -moz-transition: all 0.2s ease-in-out;
+      -ms-transition: all 0.2s ease-in-out;
+      -o-transition: all 0.2s ease-in-out;
+      transition: all 0.2s ease-in-out;
+      width: 14px;
+    }
+
+    .acc_ctrl:after {
+      background: #44596B;
+      content: '';
+      height: 2px;
+      margin-right: 37px;
+      position: absolute;
+      right: 0;
+      top: 50%;
+      width: 14px;
+    }
+
+    .acc_ctrl.active:before {
+      -webkit-transform: rotate(0deg);
+      -moz-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+      -o-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    .acc_ctrl.active h2,
+    .acc_ctrl:focus h2 {
+      position: relative;
+    }
+
+    .acc_panel {
+      background: #F2F2F2;
+      display: none;
+      overflow: hidden;
+    }
+
+    .hexa {
+      border: 0px;
+      float: left;
+      text-align: center;
+      height: 35px;
+      width: 60px;
+      font-size: 22px;
+      background: #f0f0f0;
+      color: #3c3c3c;
+      position: relative;
+      margin-top: 15px;
+    }
+
+    .hexa:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-bottom: 15px solid #f0f0f0;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      top: -15px;
+    }
+
+    .hexa:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      border-top: 15px solid #f0f0f0;
+      bottom: -15px;
+    }
+
+    .timeline {
+      position: relative;
+      padding: 0;
+      width: 100%;
+      margin-top: 20px;
+      list-style-type: none;
+    }
+
+    .timeline:before {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      content: ' ';
+      display: block;
+      width: 2px;
+      height: 100%;
+      margin-left: -1px;
+      background: rgb(213, 213, 213);
+      background: -moz-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(30, 87, 153, 1)), color-stop(100%, rgba(125, 185, 232, 1)));
+      background: -webkit-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+      background: -o-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+      background: -ms-linear-gradient(top, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+      background: linear-gradient(to bottom, rgba(213, 213, 213, 0) 0%, rgb(213, 213, 213) 8%, rgb(213, 213, 213) 92%, rgba(213, 213, 213, 0) 100%);
+      z-index: 5;
+    }
+
+    .timeline li {
+      padding: 2em 0;
+    }
+
+    .timeline .hexa {
+      width: 16px;
+      height: 10px;
+      position: absolute;
+      background: #00c4f3;
+      z-index: 5;
+      left: 0;
+      right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      top: -30px;
+      margin-top: 0;
+    }
+
+    .timeline .hexa:before {
+      border-bottom: 4px solid #00c4f3;
+      border-left-width: 8px;
+      border-right-width: 8px;
+      top: -4px;
+    }
+
+    .timeline .hexa:after {
+      border-left-width: 8px;
+      border-right-width: 8px;
+      border-top: 4px solid #00c4f3;
+      bottom: -4px;
+    }
+
+    .direction-l,
+    .direction-r {
+      float: none;
+      width: 100%;
+      text-align: center;
+    }
+
+    .flag-wrapper {
+      text-align: center;
+      position: relative;
+    }
+
+    .flag {
+      position: relative;
+      display: inline;
+      background: rgb(255, 255, 255);
+      font-weight: 600;
+      z-index: 15;
+      padding: 6px 10px;
+      text-align: left;
+      border-radius: 5px;
+    }
+
+    .direction-l .flag:after,
+    .direction-r .flag:after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: -15px;
+      height: 0;
+      width: 0;
+      margin-left: -8px;
+      border: solid transparent;
+      border-bottom-color: rgb(255, 255, 255);
+      border-width: 8px;
+      pointer-events: none;
+    }
+
+    .direction-l .flag {
+      -webkit-box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+      -moz-box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+      box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+
+    .direction-r .flag {
+      -webkit-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+      -moz-box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.15), 0 0 1px rgba(0, 0, 0, 0.15);
+    }
+
+    .time-wrapper {
+      display: block;
+      position: relative;
+      margin: 4px 0 0 0;
+      z-index: 14;
+      line-height: 1em;
+      vertical-align: middle;
+      color: #fff;
+    }
+
+    .direction-l .time-wrapper {
+      float: none;
+    }
+
+    .direction-r .time-wrapper {
+      float: none;
+    }
+
+    .time {
+      background: #00c4f3;
+      display: inline-block;
+      padding: 8px;
+    }
+
+    .desc {
+      position: relative;
+      margin: 1em 0 0 0;
+      padding: 1em;
+      background: rgb(254, 254, 254);
+      -webkit-box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+      -moz-box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.20);
+      z-index: 15;
+    }
+
+    .direction-l .desc,
+    .direction-r .desc {
+      position: relative;
+      margin: 1em 1em 0 1em;
+      padding: 1em;
+      z-index: 15;
+    }
+
+    @media(min-width: 768px) {
+      .timeline {
+        width: 660px;
+        margin: 0 auto;
+        margin-top: 20px;
+      }
+
+      .timeline li:after {
+        content: "";
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+      }
+
+      .timeline .hexa {
+        left: -28px;
+        right: auto;
+        top: 8px;
+      }
+
+      .timeline .direction-l .hexa {
+        left: auto;
+        right: -28px;
+      }
+
+      .direction-l {
+        position: relative;
+        width: 310px;
+        float: left;
+        text-align: right;
+      }
+
+      .direction-r {
+        position: relative;
+        width: 310px;
+        float: right;
+        text-align: left;
+      }
+
+      .flag-wrapper {
+        display: inline-block;
+      }
+
+      .flag {
+        font-size: 18px;
+      }
+
+      .direction-l .flag:after {
+        left: auto;
+        right: -16px;
+        top: 50%;
+        margin-top: -8px;
+        border: solid transparent;
+        border-left-color: rgb(254, 254, 254);
+        border-width: 8px;
+      }
+
+      .direction-r .flag:after {
+        top: 50%;
+        margin-top: -8px;
+        border: solid transparent;
+        border-right-color: rgb(254, 254, 254);
+        border-width: 8px;
+        left: -8px;
+      }
+
+      .time-wrapper {
+        display: inline;
+        vertical-align: middle;
+        margin: 0;
+      }
+
+      .direction-l .time-wrapper {
+        float: left;
+      }
+
+      .direction-r .time-wrapper {
+        float: right;
+      }
+
+      .time {
+        padding: 5px 10px;
+      }
+
+      .direction-r .desc {
+        margin: 1em 0 0 0.75em;
+      }
+    }
+
+    @media(min-width: 992px) {
+      .timeline {
+        width: 800px;
+        margin: 0 auto;
+        margin-top: 20px;
+      }
+
+      .direction-l {
+        position: relative;
+        width: 380px;
+        float: left;
+        text-align: right;
+      }
+
+      .direction-r {
+        position: relative;
+        width: 380px;
+        float: right;
+        text-align: left;
+      }
+    }
+
+    .fullscreen-bg__video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      object-fit: cover;
+      overflow: hidden !important;
+      background-size: cover;
+      background-position: center center;
+
+
+    }
+
+    .project-box {
+      border-radius: 15px;
+      -webkit-box-shadow: 0px 0px 24px 0px rgba(181, 181, 181, 1);
+      -moz-box-shadow: 0px 0px 24px 0px rgba(181, 181, 181, 1);
+      box-shadow: 0px 0px 24px 0px rgba(181, 181, 181, 1);
+      background-color: white;
+      padding: 25px;
+    }
+
+    .winner-box {
+      border: 5px solid rgb(255, 196, 34);
+    }
+
+    .winner-box-2 {
+      border: 5px solid rgb(165, 161, 140);
+    }
+
+    .winner-box-3 {
+      border: 5px solid rgb(207, 145, 63);
+    }
+  </style>
+  <meta class="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>CuperHacks - a student-led global online hackathon</title>
+  <!-- Don't forget to add your metadata here -->
+  <link rel='stylesheet' href='css/style.min.css' />
+</head>
+
+<body>
+  <!-- Hero(extended) navbar -->
+  <div class="navbar navbar--extended">
+    <nav class="nav__mobile"></nav>
+    <div class="container">
+      <div class="navbar__inner">
+        <a href="index.html" class="navbar__logo"><img
+            src="https://i.ibb.co/xHYpY2c/Untitled-drawing-2020-03-07-T193844-828.png" width=250px;></img></a>
+        <nav class="navbar__menu">
+          <ul>
+            <li><a href="index.html">Return to Home</a></li>
+            <!-- <li><a href="#about">About</a></li>
+            <li><a href="#venue">Venue</a></li>
+            <li><a href="#submit">Submissions</a></li>
+						<li><a href="#prizes">Prizes</a></li>
+						<li><a href="#faq">FAQ</a></li>
+						<li><a href="#sponsors">Sponsors</a></li>
+					
+						<li><a href="#schedule">Schedule</a></li>
+						<li><a href="#team">Team</a></li> -->
+          </ul>
+        </nav>
+        <div class="navbar__menu-mob"><a href="" id='toggle'><svg role="img" xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 448 512">
+              <path fill="currentColor"
+                d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"
+                class=""></path>
+            </svg></a></div>
+      </div>
+    </div>
+  </div>
+  <!-- Hero unit -->
+  <div class="hero" id="hero" style="width:100%; background-color: white !important;">
+    <video autoplay muted loop id="myVideo" class="fullscreen-bg__video" style="color: white;">
+      <source src="bjvideo.mp4" type="video/mp4">
+    </video>
+
+
+    <div class="hero__inner" id="hero__inner">
+      <div class="container">
+        <div class="hero__content">
+          <div class="hero__content__inner" id='navConverter'>
+            <img width=25% src="https://i.ibb.co/JrFyZqd/Untitled-drawing-2020-03-07-T193110-143.png"></img>
+            <h2 style="color: white; font-size: 75px; font-family: Raleway, sans-serif;"><b>Cuper</b>Hacks</h2>
+            <h2 style="color: white; font-family: Raleway, sans-serif">See winners below!</h2>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <div class="hero__sub">
+    <span id="scrollToNext" class="scroll">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        class='hero__sub__down' fill="currentColor" width="512px" height="512px" viewBox="0 0 512 512"
+        style="enable-background:new 0 0 512 512;" xml:space="preserve">
+        <path
+          d="M256,298.3L256,298.3L256,298.3l174.2-167.2c4.3-4.2,11.4-4.1,15.8,0.2l30.6,29.9c4.4,4.3,4.5,11.3,0.2,15.5L264.1,380.9c-2.2,2.2-5.2,3.2-8.1,3c-3,0.1-5.9-0.9-8.1-3L35.2,176.7c-4.3-4.2-4.2-11.2,0.2-15.5L66,131.3c4.4-4.3,11.5-4.4,15.8-0.2L256,298.3z" />
+      </svg>
+    </span>
+  </div>
+  <!-- Steps -->
+
+
+  <div class="expanded landing__section" id="prizes">
+    <div class="container">
+
+      <h1 style="text-align: center;">Congratulations to all of our winners!</h1>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <h2><b>3rd Place & Best COVID</b></h2>
+          <div class="project-box winner-box">
+            <h2>CovidGuide</h2>
+            <p>by Srinjoy Dutta</p>
+            <p>This is a Covid 19 guide which gives people resources to help live through the shelter in place. It also
+              includes directions to the nearest covid testing center.</p>
+            <a href="https://drive.google.com/file/d/1_GXZinlh5UHpz6CCw4pjUOsV4OewRbHE/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/srinjoyca/CovidGuide" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <h2><b>1st Place</b> </h2>
+          <div class="project-box winner-box">
+            <h2>Argus</h2>
+            <p>by Ankit Lakkapragada, Aayush Bandopadhyay</p>
+            <p>Argus is a deep learning neural network that detects guns in security camera footage, posting the
+              location of the shooting on a public website, alerting the authorities through an automatic message, while
+              sending the school into lockdown.</p>
+            <a href="https://www.youtube.com/watch?v=R7EZhRkhSDM" class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/AnkitLakkapragada/Argus" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <h2><b>2nd Place & Best UI</b> </h2>
+          <div class="project-box winner-box">
+            <h2>C.U.T.E.</h2>
+            <p>by Richard Cao</p>
+            <p>My project is a single-player top-down shooting game called C.U.T.E.
+              <br> Game Backstory: The cats have acquired brainwashing taser equipment and have turned your friends into
+              foes. It is up to you to save them.
+
+            </p>
+            <a href="https://youtu.be/qPJh3NxBQyw" class="button button__accent">Link to Video Demo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-6" style="text-align: center; margin-top: auto; ">
+          <h2><b>Best Pitch</b></h2>
+          <div class="project-box winner-box-2">
+            <h2>Runplay Fitness</h2>
+            <p>by Avantika Agarwal, Jody Lo, Jessica Nguyen, Katie Liu, Rachel Kim</p>
+            <p>Currently, health is a major concern in the US, as seen with the spiking rates of obesity and heart
+              disease. We made a fitness app for Windows. This app allows users to log their workout activities, water
+              intake, sleep, and also any future goals they have for the future. </p>
+            <a href="https://drive.google.com/file/d/1x_LXHm4Coh8E8DrrysHrH7dKtvPiEF12/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/qtpyavan/runplayfitness" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-6" style="text-align: center; margin-top: auto;">
+          <h2><b>Best Beginner</b> </h2>
+          <div class="project-box winner-box-2">
+            <h2>TicTacToe AI</h2>
+            <p>by Sarah Li, Hanza Amari, Amy Rainer, Tommy Chang, Michael Lu</p>
+            <p>We used the mini-max and alpha beta pruning algorithm in order to create an AI that will be able to
+              efficiently make winning moves in tic tac toe.
+            </p>
+            <a href="https://drive.google.com/file/d/1vmaBGjM-u3X8sutG5FpJkuLfg2e5RAB9/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/sarahli2003/tictactoeAI" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <h2><b>Runner up</b></h2>
+          <div class="project-box winner-box-3">
+            <h2>Just Chat</h2>
+            <p>by Samuel Deng, Maxwell Leung, Joshua Roy, Henry Niu</p>
+            <p>Messenger, WeChat, WhatsApp... What do they all have in common? They are all bloated with games, file
+              sending support, and other unnecessary features. When you just need to send a simple message to other(s),
+              you have to sacrifice half your ram just for Google Chrome and Messenger to start up. This application
+              just has a simple chat server and has messaging and group messaging, nothing else.</p>
+            <a href="https://drive.google.com/file/d/1AyU0DYTH64mhbstFvmLwgm3c3_MVukW1/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/samueldeng03/JustChat" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <h2><b>Runner up</b> </h2>
+          <div class="project-box winner-box-3">
+            <h2>CoreMLLearning</h2>
+            <p>by Sylvie Bray, Yu Zhang, Connie Mckinsey, Suanna Zoel, Liana Zheng</p>
+            <p>A machine learning algorithm that is trained using a set of multiple hundreds of images of just hot dogs
+              to predict whether or not an image is or is not a hotdog.</p>
+            <a href="https://drive.google.com/file/d/1IZDAf8IpcKbicwDmVkL-CQy1Sq9vkNYm/view"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/lianaz123/CoreMLLearning" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <h2><b>Runner up</b> </h2>
+          <div class="project-box winner-box-3">
+            <h2>Running Outlaws
+            </h2>
+            <p>by Adarsh Bawa, Joseph Tang, Max Wang, Leo Dong, Ethan Jiang</p>
+            <p>We made "Running Outlaws", an infinite chasing game that is meant for kids to have fun while learning
+              math. In this game, you play as an outlaw that is running away from the authorities. In this game, you can
+              use your mouse to pull back a ball and launch it at the enemies. If one of the enemies reach your wagon,
+              you are prompted with a math problem (for now it is just addition) and if answered wrong you lose.</p>
+            <a href="https://drive.google.com/file/d/1xVbsVQp8l8BELq1h2yvu7v8f-_LlfyrH/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+          </div>
+        </div>
+      </div><br>
+
+    </div><br>
+
+  </div>
+  <!-- <div class="expanded landing__section" id="faq">
+    <div class="container">
+      <h2>Thanks to all who submitted projects!</h2>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2>ARMeasure</h2>
+            <p>Lana Farhed, Arjun Kumar, Vishal Gupta, Vijay Uppalapati</p>
+            <p>An AR measuring app that allows people to measure objects in real time in meters.</p>
+            <a href="https://drive.google.com/file/d/1SoLCAGmvLZwcO14nYEAzd2RkHETG6c02/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/liana6002/ARMeasure" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>Climate Checker</h2>
+            <p>Raj Jesh, Arjun Gupta, Amay Raj, Amritraj Binuraj, Zayan Syed</p>
+            <p>An app that was built with swift and xcode and cocoapods in order to check the current temprature at any location. This app was built as a simpler way to check the weather. If you are on the go, and want to just know the weather without any statistics that may divert your attention, then this is the perfect app for that. We would like to develop on this app in the future by adding a GPS tracking system that can retrieve the API address of someone and display their city's current weather.</p>
+            <a href="https://drive.google.com/file/d/1otMA27334XrSCEFPLga7QFvbW5WsxKeH/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://drive.google.com/file/d/1otMA27334XrSCEFPLga7QFvbW5WsxKeH/view?usp=sharing" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>Blackjack Game</h2>
+            <p>adithya, arak, sohl, abhay, adarsh</p>
+            <p>This is a quick blackjack game which interacts with the user.</p>
+            <a href="https://drive.google.com/file/d/16DQSfH_PSR3-qTcHpWF1cGUyIm3sJqmH/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+              <a href="https://github.com/soholkundur/blackjack/tree/master" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2>3-d Design Program</h2>
+            <p>Robert Chen, Jash Gada, Mikey Cheng, Samuel Li, Siddarth Gowdru</p>
+            <p>A program that makes a 3-D design.</p>
+         
+            <a href="https://repl.it/repls/PristineFlusteredDatabase" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>HelpChat</h2>
+            <p>zhu peng, enzo wu, tu wan, krystal lin, joonah huang</p>
+            <p>A chat that allows people stranded anywhere at any point quickly contact help from the nearest person.</p>
+            <a href="https://drive.google.com/file/d/1UxjV_F75Q_HB3CjDFgIOy3orfdtGFOSa/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/zlie-1-1/helpchat" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>War</h2>
+            <p>adit, bodhi, apulu, William</p>
+            <p>This is a game of war. It simulates it between players.</p>
+            <a href="https://drive.google.com/file/d/1Kd1TZK93pqcDek8zR_FydrDNopIB-Qm5/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+              <a href="https://github.com/kumaradit132/War/tree/master" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2>CovidGuide</h2>
+            <p>Mehul Patel, Andrew Bian, Guarav Jain, Ryan Ji</p>
+            <p>This app is a covid related one. It finds the user's location. Based on that it finds the closest covid testing center to the user. There are directions provided for the user to go to the nearest covid testing center.</p>
+            <a href="https://drive.google.com/file/d/1PGeHdM5VCbnKWfxt265dSizl1PmElHXn/view?usp=sharing"
+              class="button button__accent">Link to Video Demo</a>
+             <a href="https://github.com/srinjoyca/CovidGuide" class="button button__accent">Link to Repo</a> 
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>Protesting App</h2>
+            <p>Arul Vishwanathan, Keshav Dandu</p>
+            <p>We successfully came up with a prototype for an app that allows people to work together and organize protesting much more easily.</p>
+  
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>Java Debug Tool</h2>
+            <p>Hanna Wong, Isabelle Lee</p>
+            <p>A java tool that allows you to debug your code by tracing every method that has been run. This will in return be able to make debugging much easier for projects.</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2>Bomberman Clone</h2>
+            <p>Liam, Caleb, Finney, Cora</p>
+            <p>"This project is a game for creating a battle between people. The people have to throw bombs at the enemies
+              "</p>
+            <a href="https://www.retrogames.cz/play_085-NES.php?language=EN"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/calebjames321/MynewGame" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>MarioKart Project</h2>
+            <p>Boma Mhiang, Endrew Rummata</p>
+            <p>really cool replica of the beloved game MarioKart</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/storm345dev/MarioKart" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>Space Trivia</h2>
+            <p>Lucas, Vamsi, Jacob, Henry</p>
+            <p>This project is a game which asks you questions which you have to respond</p>
+            <a href="https://www.youtube.com/watch?v=ipLlTdOTQCY"
+              class="button button__accent">Link to Video Demo</a>
+              <a href="https://github.com/lucasli32/https-github.com-ruscoe-Space-Trivia" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2>Sentimental Analysis</h2>
+            <p>Chris Lee, Amy Tan, Joyce Feng, Buvanna Patel</p>
+            <p>A sentimental analysis algorithm that can check whether or not you are happy based on a paragraph that you type up.</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2>Boba</h2>
+            <p>Alvin Cheng, Pranay Tiru</p>
+            <p>A website that can be used by local business to expand their e-business during the pandemic. This is just a template, but we can easily morph it when working with local businesses, since they are the ones that are getting most affected during these tough times. I attached a link of the website where the video demonstration link should go for better clarity.</p>
+            <a href="https://patturtestsite.github.io/boba/order.html"
+              class="button button__accent">Link to Video Demo</a>
+            <a href="https://github.com/patturtestsite/patturtestsite.github.io/tree/master/boba" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p>Jay, Sean, Saadat, Jash</p>
+            <p>We worked together to create an advanced calculator. This is an exact replica of the microsoft calculator and it was really, really fun to make.</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p>Aiden David, Mathew Daniels, Samuel rishard, David copperfield</p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="row" style="margin-top: auto; display: table-cell; vertical-align: bottom;">
+        <div class="col-md-4" style="text-align: center; margin-top: auto; ">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p></p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+            <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+        <div class="col-md-4" style="text-align: center; margin-top: auto;">
+          <div class="project-box">
+            <h2></h2>
+            <p></p>
+            <p</p>
+            <a href=""
+              class="button button__accent">Link to Video Demo</a>
+              <a href="" class="button button__accent">Link to Repo</a>
+          </div>
+        </div>
+      </div><br>
+      <div class="expanded__inner" style="text-align: center;">
+       
+      </div>
+    </div>
+  </div> -->
+
+
+  <!-- Footer -->
+  <script src='js/app.min.js'></script>
+  <script>
+    const items = document.querySelectorAll(".accordion a");
+
+    function toggleAccordion() {
+      this.classList.toggle('active');
+      this.nextElementSibling.classList.toggle('active');
+    }
+
+    items.forEach(item => item.addEventListener('click', toggleAccordion));
+    function onYouTubeIframeAPIReady() {
+      var player;
+      player = new YT.Player('YouTubeBackgroundVideoPlayer', {
+        videoId: '{$loadYouTubeVideoID}', // YouTube Video ID
+        width: 1280,               // Player width (in px)
+        height: 720,              // Player height (in px)
+        playerVars: {
+          playlist: '{$loadYouTubeVideoID}',
+          autoplay: 1,        // Auto-play the video on load
+          autohide: 1,
+          disablekb: 1,
+          controls: 0,        // Hide pause/play buttons in player
+          showinfo: 0,        // Hide the video title
+          modestbranding: 1,  // Hide the Youtube Logo
+          loop: 1,            // Run the video in a loop
+          fs: 0,              // Hide the full screen button
+          autohide: 0,         // Hide video controls when playing
+          rel: 0,
+          enablejsapi: 1
+        },
+        events: {
+          onReady: function (e) {
+            e.target.mute();
+            e.target.setPlaybackQuality('hd1080');
+          },
+          onStateChange: function (e) {
+            if (e && e.data === 1) {
+              var videoHolder = document.getElementById('home-banner-box');
+              if (videoHolder && videoHolder.id) {
+                videoHolder.classList.remove('loading');
+              }
+            } else if (e && e.data === 0) {
+              e.target.playVideo()
+            }
+          }
+        }
+      });
+    }
+  </script>
+  <script async src="https://www.youtube.com/iframe_api"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+</body>
+
+</html>
